@@ -44,7 +44,7 @@ export function RideMarket() {
     );
     if (!list.length) list = DRIVERS.filter((r) => g === "Any" || r.gender === g);
     const priced = list.map((r) => {
-      const rate = FARE_RATES[r.vehicle] ?? FARE_RATES.Car!;
+      const rate = FARE_RATES[r.vehicle] ?? FARE_RATES["Car"]!;
       const total = Math.round(rate.base + rate.perKm * km);
       return {
         ...r,
@@ -339,7 +339,7 @@ function SharePanel() {
 
   const fare = useMemo(() => {
     const km = form.from && form.to ? routeKm(form.from, form.to) : 12;
-    const rate = FARE_RATES[form.vehicle] ?? FARE_RATES.Car!;
+    const rate = FARE_RATES[form.vehicle] ?? FARE_RATES["Car"]!;
     return Math.ceil((rate.base + rate.perKm * km) / Math.max(1, form.seats));
   }, [form]);
 
