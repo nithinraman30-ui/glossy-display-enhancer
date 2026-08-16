@@ -1,10 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Button as _B } from "@/components/ui/button";
 import { Counter, GlossCard, Reveal, SectionHeading } from "./ui-bits";
 import { useAuth } from "./auth-context";
-
-void _B;
 
 const STATS = [
   { to: 62, suffix: "%", label: "Cars run with empty seats in city commutes" },
@@ -57,7 +54,7 @@ export function Impact() {
                 <Button variant="gold" size="lg" onClick={() => open({})}>
                   Get started <ArrowRight className="size-4" />
                 </Button>
-                <Button variant="glass" size="lg" onClick={() => open({ driver: true })}>
+                <Button variant="glass" size="lg" onClick={() => open({})}>
                   Offer a seat
                 </Button>
               </div>
