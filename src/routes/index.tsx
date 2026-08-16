@@ -1,24 +1,59 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/components/ridesafe/auth-context";
+import { Nav } from "@/components/ridesafe/Nav";
+import { Hero } from "@/components/ridesafe/Hero";
+import { Pillars } from "@/components/ridesafe/Pillars";
+import { About } from "@/components/ridesafe/About";
+import { Services } from "@/components/ridesafe/Services";
+import { RideMarket } from "@/components/ridesafe/RideMarket";
+import { Tracking } from "@/components/ridesafe/Tracking";
+import { Verification } from "@/components/ridesafe/Verification";
+import { Fare } from "@/components/ridesafe/Fare";
+import { Safety } from "@/components/ridesafe/Safety";
+import { HowItWorks } from "@/components/ridesafe/HowItWorks";
+import { Impact } from "@/components/ridesafe/Impact";
+import { Footer } from "@/components/ridesafe/Footer";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+const title = "RideSafe — Safe, Low-Fare Ride & Goods Sharing";
+const description =
+  "RideSafe connects verified drivers and passengers for low-fare shared rides and goods delivery, with live tracking, guardian sharing and one-tap SOS.";
+
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title },
+      { name: "description", content: description },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <AuthProvider>
+      <div className="min-h-screen bg-background text-foreground">
+        <Nav />
+        <main>
+          <Hero />
+          <Pillars />
+          <About />
+          <Services />
+          <RideMarket />
+          <Tracking />
+          <Verification />
+          <Fare />
+          <Safety />
+          <HowItWorks />
+          <Impact />
+        </main>
+        <Footer />
+        <Toaster position="top-center" richColors />
+      </div>
+    </AuthProvider>
   );
 }
