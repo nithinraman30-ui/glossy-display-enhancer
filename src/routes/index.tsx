@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/components/ridesafe/auth-context";
-import { AuthDialog } from "@/components/ridesafe/AuthDialog";
 import { Nav } from "@/components/ridesafe/Nav";
 import { Hero } from "@/components/ridesafe/Hero";
 import { Pillars } from "@/components/ridesafe/Pillars";
@@ -53,7 +52,6 @@ function Index() {
           <Impact />
         </main>
         <Footer />
-        <AuthDialog />
         <Toaster position="top-center" richColors />
       </div>
     </AuthProvider>
