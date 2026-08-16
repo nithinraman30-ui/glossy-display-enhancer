@@ -80,7 +80,7 @@ export function Services() {
           {SERVICES.map((s, i) => (
             <Reveal key={s.n} delay={i * 0.06}>
               <GlossCard
-                sheen={s.dark}
+                sheen={Boolean(s.dark)}
                 className={
                   "group h-full p-6 " + (s.dark ? "border-transparent bg-ink text-primary-foreground" : "")
                 }
