@@ -510,11 +510,103 @@ function SharePanel() {
 }
 
 function DriverDialog({ driver, onClose }: { driver: Driver | null; onClose: () => void }) {
+  const [stage, setStage] = useState<"details" | "split">("details");
+  const [riders, setRiders] = useState(2);
+
+  useEffect(() => {
+    if (driver) {
+      setStage("details");
+      setRiders(2);
+    }
+  }, [driver]);
+
+  const total = driver ? driver.fare * riders : 0;
+  const perHead = driver ? Math.round(total / riders) : 0;
+  const platform = Math.round(total * 0.05);
+
   return (
     <Dialog open={Boolean(driver)} onOpenChange={(v) => !v && onClose()}>
       <DialogContent className="glossy rounded-3xl border-border/70 bg-card/95 backdrop-blur-xl sm:max-w-md">
         <span className="gloss-layer" aria-hidden />
-        {driver && (
+        {driver && stage === "split" && (
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="relative"
+          >
+            <DialogTitle className="text-xl">Split ride expenses</DialogTitle>
+            <DialogDescription>
+              Review the shared cost with {driver.name} before you confirm — no payment is taken
+              until the driver accepts.
+            </DialogDescription>
+
+            <div className="mt-5 rounded-2xl bg-secondary/60 p-4">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Co-riders sharing</span>
+                <span className="flex items-center gap-3">
+                  <button
+                    aria-label="Fewer co-riders"
+                    className="grid size-8 place-items-center rounded-full bg-card font-bold"
+                    onClick={() => setRiders((r) => Math.max(1, r - 1))}
+                  >
+                    −
+                  </button>
+                  <b className="font-display text-lg">{riders}</b>
+                  <button
+                    aria-label="More co-riders"
+                    className="grid size-8 place-items-center rounded-full bg-card font-bold"
+                    onClick={() => setRiders((r) => Math.min(driver.seats || 4, r + 1))}
+                  >
+                    +
+                  </button>
+                </span>
+              </div>
+            </div>
+
+            <dl className="mt-4 grid gap-2 text-sm">
+              {[
+                ["Fare per seat", `₹${driver.fare}`],
+                ["Total trip cost", `₹${total}`],
+                ["Platform support (5%)", `₹${platform}`],
+                ["Your share", `₹${perHead}`],
+              ].map(([k, v], i) => (
+                <motion.div
+                  key={k}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.05 * i }}
+                  className="flex items-center justify-between rounded-xl bg-secondary/60 px-3.5 py-2"
+                >
+                  <dt className="text-muted-foreground">{k}</dt>
+                  <dd className="font-semibold">{v}</dd>
+                </motion.div>
+              ))}
+            </dl>
+
+            <p className="mt-3 text-xs text-muted-foreground">
+              Ride Sync only helps divide eligible travel costs (fuel + tolls) — it is cost sharing,
+              not a commercial fare.
+            </p>
+
+            <div className="mt-5 grid gap-2 sm:grid-cols-2">
+              <Button variant="outline" onClick={() => setStage("details")}>
+                Back
+              </Button>
+              <Button
+                variant="hero"
+                onClick={() => {
+                  toast.success(
+                    `Seat requested with ${driver.name}. Your share ₹${perHead} — pay after confirmation.`,
+                  );
+                  onClose();
+                }}
+              >
+                Confirm & request <ArrowRight className="size-4" />
+              </Button>
+            </div>
+          </motion.div>
+        )}
+        {driver && stage === "details" && (
           <div className="relative">
             <div className="flex items-center gap-4">
               <span className="grid size-16 place-items-center rounded-3xl bg-gradient-primary font-display text-xl font-bold text-primary-foreground shadow-glow">
