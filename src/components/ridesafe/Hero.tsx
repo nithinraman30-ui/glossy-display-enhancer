@@ -15,7 +15,7 @@ const CHIPS = [
 ];
 
 export function Hero() {
-  const { open, setWomenMode } = useAuth();
+  const { open, setWomenMode, signedIn } = useAuth();
   const [pickup, setPickup] = useState("");
   const [drop, setDrop] = useState("");
   const [chip, setChip] = useState("City Ride");
