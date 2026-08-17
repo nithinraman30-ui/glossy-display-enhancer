@@ -25,11 +25,17 @@ export function Hero() {
       toast.error("Please enter both pickup and destination.");
       return;
     }
-    const el = document.getElementById("rides");
-    window.dispatchEvent(
-      new CustomEvent("ridesafe:search", { detail: { from: pickup, to: drop, mode: chip } }),
-    );
-    el?.scrollIntoView({ behavior: "smooth" });
+    if (!signedIn) {
+      toast("Login or sign up to open the ride marketplace.");
+      open();
+      return;
+    }
+    goToView("rides");
+    window.setTimeout(() => {
+      window.dispatchEvent(
+        new CustomEvent("ridesafe:search", { detail: { from: pickup, to: drop, mode: chip } }),
+      );
+    }, 250);
   };
 
   return (
