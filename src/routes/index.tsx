@@ -54,7 +54,7 @@ function Index() {
   );
 }
 
-const SECTIONS: Record<string, () => JSX.Element> = {
+const SECTIONS: Record<string, () => ReactNode> = {
   about: About,
   services: Services,
   rides: RideMarket,
