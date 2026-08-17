@@ -1,5 +1,6 @@
 import { Mail, MapPin, Phone } from "lucide-react";
 import { Reveal } from "./ui-bits";
+import { goToView } from "./view-context";
 
 const COLS = [
   {

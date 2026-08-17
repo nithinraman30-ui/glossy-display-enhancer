@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import { Sparkles } from "lucide-react";
 import { GlossCard, Reveal, SectionHeading } from "./ui-bits";
 import { useAuth } from "./auth-context";
+import { goToView } from "./view-context";
 
 export function Services() {
   const { open, setWomenMode } = useAuth();

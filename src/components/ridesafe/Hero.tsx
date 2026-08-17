@@ -5,6 +5,7 @@ import { ArrowRight, Bike, MapPin, Navigation, ShieldCheck, Sparkles, Route } fr
 import { Button } from "@/components/ui/button";
 import { Counter, Eyebrow } from "./ui-bits";
 import { useAuth } from "./auth-context";
+import { goToView } from "./view-context";
 
 const CHIPS = [
   { label: "City Ride", icon: "🏙️" },

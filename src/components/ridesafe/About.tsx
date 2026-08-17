@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Eyebrow, Reveal } from "./ui-bits";
+import { goToView } from "./view-context";
 
 const NODES = [
   { icon: "👤", label: "Passenger", pos: "top-2 left-1/2 -translate-x-1/2" },
