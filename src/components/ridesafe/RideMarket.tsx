@@ -91,8 +91,8 @@ export function RideMarket() {
           <div className="mt-10 flex flex-wrap justify-center gap-2">
             {(
               [
-                { id: "find", label: "🚕 I want a ride" },
-                { id: "share", label: "🧑‍✈️ I want to share" },
+                { id: "find", label: "🚕 Get Ride Sync" },
+                { id: "share", label: "🧑‍✈️ Share Ride Sync" },
                 { id: "delivery", label: "📦 Goods / Delivery" },
               ] as const
             ).map((t) => (

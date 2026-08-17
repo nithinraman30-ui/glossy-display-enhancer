@@ -54,7 +54,7 @@ export function AuthDialog({
     }
     setStep("done");
     onSuccess(name.trim(), women);
-    toast.success("Account verified — welcome to RideSafe.");
+    toast.success("Account verified — welcome to Ride Sync.");
   };
 
   const setDigit = (i: number, v: string) => {
@@ -196,7 +196,7 @@ export function AuthDialog({
                 <DialogDescription className="mt-2">
                   {women ? "Women-for-Women preference is on. " : ""}
                   {guardian ? "Guardian sharing is ready. " : ""}
-                  Your RideSafe account is verified.
+                  Your Ride Sync account is verified.
                 </DialogDescription>
                 <div className="mt-4 flex items-center justify-center gap-2 text-xs font-semibold tracking-wider text-primary uppercase">
                   <ShieldCheck className="size-4" /> KYC · Licence · Vehicle

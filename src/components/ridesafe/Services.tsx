@@ -8,7 +8,7 @@ export function Services() {
   const { open, setWomenMode } = useAuth();
 
   const scrollTo = (id: string) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    goToView(id);
 
   const SERVICES = [
     {
