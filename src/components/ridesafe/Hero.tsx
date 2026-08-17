@@ -5,6 +5,7 @@ import { ArrowRight, Bike, MapPin, Navigation, ShieldCheck, Sparkles, Route } fr
 import { Button } from "@/components/ui/button";
 import { Counter, Eyebrow } from "./ui-bits";
 import { useAuth } from "./auth-context";
+import { goToView } from "./view-context";
 
 const CHIPS = [
   { label: "City Ride", icon: "🏙️" },
@@ -14,7 +15,7 @@ const CHIPS = [
 ];
 
 export function Hero() {
-  const { open, setWomenMode } = useAuth();
+  const { open, setWomenMode, signedIn } = useAuth();
   const [pickup, setPickup] = useState("");
   const [drop, setDrop] = useState("");
   const [chip, setChip] = useState("City Ride");
@@ -24,11 +25,17 @@ export function Hero() {
       toast.error("Please enter both pickup and destination.");
       return;
     }
-    const el = document.getElementById("rides");
-    window.dispatchEvent(
-      new CustomEvent("ridesafe:search", { detail: { from: pickup, to: drop, mode: chip } }),
-    );
-    el?.scrollIntoView({ behavior: "smooth" });
+    if (!signedIn) {
+      toast("Login or sign up to open the ride marketplace.");
+      open();
+      return;
+    }
+    goToView("rides");
+    window.setTimeout(() => {
+      window.dispatchEvent(
+        new CustomEvent("ridesafe:search", { detail: { from: pickup, to: drop, mode: chip } }),
+      );
+    }, 250);
   };
 
   return (

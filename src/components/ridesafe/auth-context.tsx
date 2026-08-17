@@ -1,5 +1,7 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
+import { toast } from "sonner";
 import { AuthDialog } from "./AuthDialog";
+import { goToView } from "./view-context";
 
 type AuthCtx = {
   open: (opts?: { women?: boolean; guardian?: boolean }) => void;
@@ -7,6 +9,7 @@ type AuthCtx = {
   name: string;
   womenMode: boolean;
   setWomenMode: (v: boolean) => void;
+  signOut: () => void;
 };
 
 const Ctx = createContext<AuthCtx | null>(null);
@@ -29,9 +32,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsOpen(true);
   }, []);
 
+  const signOut = useCallback(() => {
+    setSignedIn(false);
+    setWomenMode(false);
+    goToView("home");
+    toast("Signed out of Ride Sync.");
+  }, []);
+
   const value = useMemo(
-    () => ({ open, signedIn, name, womenMode, setWomenMode }),
-    [open, signedIn, name, womenMode],
+    () => ({ open, signedIn, name, womenMode, setWomenMode, signOut }),
+    [open, signedIn, name, womenMode, signOut],
   );
 
   return (
@@ -45,6 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setSignedIn(true);
           setName(userName || "Rider");
           if (women) setWomenMode(true);
+          goToView("services");
         }}
       />
     </Ctx.Provider>

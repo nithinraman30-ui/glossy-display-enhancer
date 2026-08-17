@@ -60,7 +60,7 @@ export function Verification() {
                   variant="outline"
                   className="mt-4 w-full"
                   onClick={() =>
-                    toast.success(`${d.name} · ${d.plate} — all documents verified by RideSafe.`)
+                    toast.success(`${d.name} · ${d.plate} — all documents verified by Ride Sync.`)
                   }
                 >
                   View verified profile →

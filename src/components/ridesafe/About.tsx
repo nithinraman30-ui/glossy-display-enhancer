@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Eyebrow, Reveal } from "./ui-bits";
+import { goToView } from "./view-context";
 
 const NODES = [
   { icon: "👤", label: "Passenger", pos: "top-2 left-1/2 -translate-x-1/2" },
@@ -26,7 +27,7 @@ export function About() {
             <span className="gloss-layer rounded-[2rem]" aria-hidden />
             <div className="relative">
               <small className="text-[11px] font-semibold tracking-[0.18em] text-primary-foreground/60 uppercase">
-                RideSafe ecosystem • 2026
+                Ride Sync ecosystem • 2026
               </small>
               <div className="relative mx-auto mt-4 aspect-square w-full max-w-sm">
                 <div
@@ -77,13 +78,13 @@ export function About() {
         </Reveal>
 
         <Reveal delay={0.12}>
-          <Eyebrow>About RideSafe</Eyebrow>
+          <Eyebrow>About Ride Sync</Eyebrow>
           <h2 className="mt-5 text-3xl leading-[1.1] font-semibold sm:text-4xl md:text-[2.75rem]">
             Transportation should be <span className="text-gradient">shared, smart and safe.</span>
           </h2>
           <p className="mt-5 text-muted-foreground">
             The growing number of private vehicles creates congestion, higher travel cost, excess
-            fuel use and pollution. RideSafe makes better use of the empty seats already moving
+            fuel use and pollution. Ride Sync makes better use of the empty seats already moving
             through the city.
           </p>
           <p className="mt-3 text-muted-foreground">
@@ -110,7 +111,7 @@ export function About() {
             size="lg"
             className="mt-7"
             onClick={() =>
-              document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })
+              goToView("services")
             }
           >
             Explore our services <ArrowRight className="size-4" />

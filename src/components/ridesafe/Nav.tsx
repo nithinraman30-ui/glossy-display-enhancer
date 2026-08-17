@@ -1,37 +1,21 @@
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import { Menu, X } from "lucide-react";
+import { LogOut, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAuth } from "./auth-context";
+import { VIEWS, useView } from "./view-context";
 
-const LINKS = [
-  { id: "about", label: "About" },
-  { id: "services", label: "Services" },
-  { id: "rides", label: "Rides" },
-  { id: "tracking", label: "Tracking" },
-  { id: "verification", label: "Drivers" },
-  { id: "safety", label: "Safety" },
-  { id: "how", label: "How it works" },
-];
+const LINKS = VIEWS.filter((v) => v.id !== "home");
 
 export function Nav() {
-  const { open, signedIn, name } = useAuth();
+  const { open, signedIn, name, signOut } = useAuth();
+  const { view, setView } = useView();
   const [scrolled, setScrolled] = useState(false);
-  const [active, setActive] = useState("home");
   const [mobile, setMobile] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 24);
-      const ids = ["home", ...LINKS.map((l) => l.id)];
-      let current = "home";
-      for (const id of ids) {
-        const el = document.getElementById(id);
-        if (el && el.getBoundingClientRect().top <= 140) current = id;
-      }
-      setActive(current);
-    };
+    const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -39,7 +23,7 @@ export function Nav() {
 
   const goTo = (id: string) => {
     setMobile(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setView(id as never);
   };
 
   return (
@@ -62,43 +46,51 @@ export function Nav() {
         <button
           onClick={() => goTo("home")}
           className="group flex items-center gap-2.5"
-          aria-label="RideSafe home"
+          aria-label="Ride Sync home"
         >
           <span className="glossy relative flex size-10 items-center justify-center rounded-2xl bg-gradient-primary font-display text-lg font-bold text-primary-foreground shadow-glow">
             <span className="gloss-layer rounded-2xl" aria-hidden />
             R
           </span>
           <span className="font-display text-lg font-semibold">
-            Ride<span className="text-gradient">Safe</span>
+            Ride <span className="text-gradient">Sync</span>
           </span>
         </button>
 
-        <nav className="hidden items-center gap-1 lg:flex">
-          {LINKS.map((l) => (
-            <button
-              key={l.id}
-              onClick={() => goTo(l.id)}
-              className={cn(
-                "relative rounded-full px-3.5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground",
-                active === l.id && "text-foreground",
-              )}
-            >
-              {active === l.id && (
-                <motion.span
-                  layoutId="nav-active"
-                  className="absolute inset-0 rounded-full bg-secondary"
-                  transition={{ type: "spring", stiffness: 320, damping: 26 }}
-                />
-              )}
-              <span className="relative">{l.label}</span>
-            </button>
-          ))}
-        </nav>
+        {signedIn && (
+          <nav className="hidden items-center gap-1 lg:flex">
+            {LINKS.map((l) => (
+              <button
+                key={l.id}
+                onClick={() => goTo(l.id)}
+                className={cn(
+                  "relative rounded-full px-3.5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground",
+                  view === l.id && "text-foreground",
+                )}
+              >
+                {view === l.id && (
+                  <motion.span
+                    layoutId="nav-active"
+                    className="absolute inset-0 rounded-full bg-secondary"
+                    transition={{ type: "spring", stiffness: 320, damping: 26 }}
+                  />
+                )}
+                <span className="relative">{l.label}</span>
+              </button>
+            ))}
+          </nav>
+        )}
 
         <div className="flex items-center gap-2">
-          <Button variant="ink" className="hidden sm:inline-flex" onClick={() => open()}>
-            {signedIn ? `Hi, ${name.split(" ")[0]}` : "Login / Sign up"}
-          </Button>
+          {signedIn ? (
+            <Button variant="ink" className="hidden sm:inline-flex" onClick={signOut}>
+              <LogOut className="size-4" /> {name.split(" ")[0]} · Sign out
+            </Button>
+          ) : (
+            <Button variant="ink" className="hidden sm:inline-flex" onClick={() => open()}>
+              Login / Sign up
+            </Button>
+          )}
           <Button
             variant="glass"
             size="icon"
@@ -115,21 +107,35 @@ export function Nav() {
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mx-auto mt-2 grid gap-1 rounded-3xl p-3 glass shadow-elegant lg:hidden"
+          className="glass mx-auto mt-2 grid gap-1 rounded-3xl p-3 shadow-elegant lg:hidden"
           style={{ width: "min(100% - 1.5rem, 72rem)" }}
         >
-          {LINKS.map((l) => (
-            <button
-              key={l.id}
-              onClick={() => goTo(l.id)}
-              className="rounded-2xl px-4 py-2.5 text-left text-sm font-medium hover:bg-secondary"
+          {signedIn &&
+            LINKS.map((l) => (
+              <button
+                key={l.id}
+                onClick={() => goTo(l.id)}
+                className="rounded-2xl px-4 py-2.5 text-left text-sm font-medium hover:bg-secondary"
+              >
+                {l.label}
+              </button>
+            ))}
+          {signedIn ? (
+            <Button
+              variant="hero"
+              className="mt-1"
+              onClick={() => {
+                setMobile(false);
+                signOut();
+              }}
             >
-              {l.label}
-            </button>
-          ))}
-          <Button variant="hero" className="mt-1" onClick={() => open()}>
-            Login / Sign up
-          </Button>
+              <LogOut className="size-4" /> Sign out
+            </Button>
+          ) : (
+            <Button variant="hero" className="mt-1" onClick={() => open()}>
+              Login / Sign up
+            </Button>
+          )}
         </motion.div>
       )}
     </motion.header>

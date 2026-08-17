@@ -1,10 +1,11 @@
 import { Mail, MapPin, Phone } from "lucide-react";
 import { Reveal } from "./ui-bits";
+import { goToView } from "./view-context";
 
 const COLS = [
   {
     title: "Platform",
-    links: ["Find a ride", "Share your seat", "Delivery partners", "Fare estimator"],
+    links: ["Get Ride Sync", "Share your seat", "Delivery partners", "Fare estimator"],
     ids: ["rides", "rides", "services", "fare"],
   },
   {
@@ -14,14 +15,14 @@ const COLS = [
   },
   {
     title: "Project",
-    links: ["About RideSafe", "How it works", "Impact", "Agile roadmap"],
+    links: ["About Ride Sync", "How it works", "Impact", "Agile roadmap"],
     ids: ["about", "how", "impact", "how"],
   },
 ];
 
 export function Footer() {
   const go = (id: string) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    goToView(id);
 
   return (
     <footer id="contact" className="relative overflow-hidden border-t border-border/60 bg-surface/80">
@@ -32,7 +33,7 @@ export function Footer() {
               🛡️
             </span>
             <b className="font-display text-xl">
-              Ride<span className="text-gradient">Safe</span>
+              Ride <span className="text-gradient">Sync</span>
             </b>
           </div>
           <p className="mt-4 max-w-xs text-sm text-muted-foreground">
@@ -73,7 +74,7 @@ export function Footer() {
 
       <div className="border-t border-border/60 px-6 py-5">
         <p className="mx-auto max-w-6xl text-xs text-muted-foreground">
-          © {new Date().getFullYear()} RideSafe · Academic project demo. Fares, drivers and tracking
+          © {new Date().getFullYear()} Ride Sync · Academic project demo. Fares, drivers and tracking
           data shown here are simulated.
         </p>
       </div>
